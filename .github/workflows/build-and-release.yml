@@ -38,4 +38,5 @@ jobs:
           git commit -m "Update .exe build [skip ci]" || echo "No changes to commit"
           git push origin master
         env:
-          GITHUB_TOKEN: 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
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          
