@@ -23,12 +23,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build project
-        run: npm run build  # Make sure this generates: dist/flow setup 0.1.0.exe
+      # - name: Build project
+      #   run: npm run build  # Make sure this generates: dist/flow setup 0.1.0.exe
 
-      - name: Copy the EXE file to project root
-        run: |
-          Copy-Item "dist\flow_setup_0.1.0.exe" "flow_setup_0.1.0.exe"
+      # - name: Copy the EXE file to project root
+      #   run: |
+      #     Copy-Item "dist\flow_setup_0.1.0.exe" "flow_setup_0.1.0.exe"
 
       - name: Commit and push EXE file
         run: |
