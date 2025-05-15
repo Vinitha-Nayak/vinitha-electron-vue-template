@@ -3,7 +3,7 @@ name: Build and Commit EXE
 on:
   push:
     branches:
-      - main  # Adjust if your default branch is different
+      - master # Adjust if your default branch is different
 
 jobs:
   build:
@@ -33,9 +33,8 @@ jobs:
           git config --global user.name "Vinitha-Nayak"
           git config --global user.email "nayakvinitha413@gmail.com"
           git fetch origin
-          git checkout main
+          git checkout master
           git add "flow_setup_0.1.0.exe"
           git commit -m "Update .exe build [skip ci]" || echo "No changes to commit"
-          git push origin main
-        env:
-          GITHUB_TOKEN: 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
+          git push origin master
+
