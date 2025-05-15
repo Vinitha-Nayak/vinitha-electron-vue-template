@@ -1,0 +1,41 @@
+name: Build and Commit EXE
+
+on:
+  push:
+    branches:
+      - main  # Adjust if your default branch is different
+
+jobs:
+  build:
+    runs-on: windows-latest  # Needed to support Windows .exe files
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build  # Make sure this generates: dist/flow setup 0.1.0.exe
+
+      - name: Copy the EXE file to project root
+        run: |
+          Copy-Item "dist\flow_setup_0.1.0.exe" "flow_setup_0.1.0.exe"
+
+      - name: Commit and push EXE file
+        run: |
+          git config --global user.name "Vinitha-Nayak"
+          git config --global user.email "nayakvinitha413@gmail.com"
+          git fetch origin
+          git checkout main
+          git add "flow_setup_0.1.0.exe"
+          git commit -m "Update .exe build [skip ci]" || echo "No changes to commit"
+          git push origin main
+        env:
+          GITHUB_TOKEN: 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
