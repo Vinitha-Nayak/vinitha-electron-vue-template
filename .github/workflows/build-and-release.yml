@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: windows-latest  # Needed to support Windows .exe files
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -37,6 +39,3 @@ jobs:
           git add "flow_setup_0.1.0.exe"
           git commit -m "Update .exe build [skip ci]" || echo "No changes to commit"
           git push origin master
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          
