@@ -40,12 +40,12 @@ jobs:
           cd dist
           Copy-Item "electron-vue-template Setup 0.1.0.exe" "..\electron-vue-template-Setup-0.1.0.exe"
 
-      # - name: Commit and push EXE file
-      #   run: |
-      #     git config --global user.name "Vinitha-Nayak"
-      #     git config --global user.email "nayakvinitha413@gmail.com"
-      #     git fetch origin
-      #     git checkout master
-      #     git add electron-vue-template-Setup-0.1.0.exe
-      #     git commit -m "Update .exe build [skip ci]" || echo "No changes to commit"
-      #     git push origin master
+      - name: Commit and push EXE file
+        run: |
+          git config --global user.name "Vinitha-Nayak"
+          git config --global user.email "nayakvinitha413@gmail.com"
+          git fetch origin
+          git checkout master
+          git add electron-vue-template-Setup-0.1.0.exe
+          git commit -m "Update .exe build [skip ci]" || echo "No changes to commit"
+          git push origin master
