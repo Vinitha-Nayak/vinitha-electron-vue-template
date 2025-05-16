@@ -33,6 +33,12 @@ jobs:
       # - name: Copy the EXE file to project root
       #   run: |
       #     Copy-Item "dist\electron-vue-template-Setup-0.1.0.exe" "electron-vue-template-Setup-0.1.0.exe"
+      
+      - name: Copy the EXE file to project root
+        shell: pwsh
+        run: |
+          cd dist
+          Copy-Item "electron-vue-template Setup 0.1.0.exe" "..\electron-vue-template-Setup-0.1.0.exe"
 
       # - name: Commit and push EXE file
       #   run: |
