@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: Build project
-        run: npm run build  # Make sure this generates: dist/flow setup 0.1.0.exe
+        run: npm run build  
 
       - name: Copy the EXE file to project root
         run: |
