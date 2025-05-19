@@ -28,7 +28,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           npm version patch -m "chore(release): %s"
-          git push origin master --follow-tags
+          git push origin HEAD --tags
 
       - name: Build project
         run: npm run build
