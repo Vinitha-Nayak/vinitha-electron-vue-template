@@ -27,4 +27,13 @@
   "dependencies": {
     "vue": "^3.3.8"
   }
+    "build": {
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "vinitha-nayak",
+        "repo": "vinitha-electron-vue-template"
+      }
+    ]
+  }
 }
