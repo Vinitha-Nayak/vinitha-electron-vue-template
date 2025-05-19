@@ -1,15 +1,11 @@
-name: Build and Upload EXE to Release
+name: Build and Release EXE
 
-on:
-  push:
-    branches:
-      - master  # or your desired branch
+on: push
 
 jobs:
-  build-and-release:
+  build-project:
+    name: Build EXE
     runs-on: windows-latest
-    permissions:
-      contents: write  # needed to create releases and upload assets
 
     steps:
       - name: Checkout code
@@ -23,13 +19,50 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build project (create .exe)
-        run: npm run build  # replace with your build command
+      - name: Build Electron app
+        run: npm run build  # This should produce the .exe in dist/
 
-      - name: Create or update GitHub Release and upload .exe
-        uses: softprops/action-gh-release@v1
+      - name: Upload EXE artifact
+        uses: actions/upload-artifact@v2
         with:
-          files: |
-            dist/*.exe  # update path to your actual .exe
+          name: electron-exe
+          path: dist/*.exe  # Adjust if your .exe file path is different
+
+  release-project:
+    name: Release EXE on GitHub
+    runs-on: windows-latest
+    needs: build-project
+
+    steps:
+      - name: Download EXE artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: electron-exe
+
+      - name: Get EXE filename
+        id: get_exe
+        run: |
+          $exe = Get-ChildItem *.exe | Select-Object -ExpandProperty Name
+          echo "exe_name=$exe" >> $env:GITHUB_ENV
+          echo "::set-output name=exe_name::$exe"
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+      - name: Upload .exe to GitHub Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ steps.get_exe.outputs.exe_name }}
+          asset_name: ${{ steps.get_exe.outputs.exe_name }}
+          asset_content_type: application/octet-stream
