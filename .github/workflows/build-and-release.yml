@@ -6,37 +6,24 @@ on:
       - master
 
 jobs:
-  release:
+  version_and_tag:
     runs-on: windows-latest
-    env:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Bump version and create tag
+      - name: Setup Git config
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
+
+      - name: Bump version and push tag
+        run: |
           npm version patch -m "chore(release): %s"
           git push origin HEAD --tags
-
-      - name: Build project
-        run: npm run build:win
-
-      - name: Upload to GitHub Releases
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            dist/*.exe
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+# This second job will run on the newly created tag
+# Use a separate workflow file: release-on-tag.yml
