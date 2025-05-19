@@ -30,10 +30,14 @@ jobs:
 
       - name: Get latest tag or set default
         id: get_tag
+        shell: pwsh
         run: |
           git fetch --tags
-          TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.1.0")
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          $tag = git describe --tags --abbrev=0 2>$null
+          if (-not $tag) {
+            $tag = "v0.1.0"
+          }
+          echo "tag=$tag" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
 
       - name: Create new tag (optional)
         id: create_tag
