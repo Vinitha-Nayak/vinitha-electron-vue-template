@@ -1,15 +1,15 @@
-name: Version Bump, Build, and Release
+name: Build and Upload EXE to Release
 
 on:
   push:
     branches:
-      - master
+      - master  # or your desired branch
 
 jobs:
-  version-bump-and-release:
+  build-and-release:
     runs-on: windows-latest
     permissions:
-      contents: write  # Needed to push tags and create releases
+      contents: write  # needed to create releases and upload assets
 
     steps:
       - name: Checkout code
@@ -23,21 +23,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Bump version and create tag
-        id: bump
-        shell: pwsh
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-      
-          # Bump version and capture output
-          $version = npm version patch -m "chore(release): bump version to %s [skip ci]"
-          echo "VERSION=$version" >> $env:GITHUB_ENV
-      
-          git push origin HEAD
-          git push origin --tags
+      - name: Build project (create .exe)
+        run: npm run build  # replace with your build command
 
-      - name: Build and publish with Electron Builder
+      - name: Create or update GitHub Release and upload .exe
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/*.exe  # update path to your actual .exe
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run electron:build
