@@ -33,3 +33,5 @@ jobs:
             dist/*.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+          #second job
