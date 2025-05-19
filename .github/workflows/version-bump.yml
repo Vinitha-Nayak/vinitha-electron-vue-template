@@ -6,6 +6,8 @@ jobs:
   build-project:
     name: Build EXE
     runs-on: windows-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       contents: write 
 
