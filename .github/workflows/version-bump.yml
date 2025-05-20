@@ -1,9 +1,6 @@
 name: Build and Release EXE
 
-on:
-  push:
-    branches:
-      - dev
+on: push
 
 jobs:
   build-project:
@@ -21,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 23.9.0
 
       - name: Install dependencies
         run: npm ci
@@ -53,11 +50,11 @@ jobs:
         run: |
           $exe = Get-ChildItem *.exe | Select-Object -ExpandProperty Name
           echo "exe_name=$exe" >> $env:GITHUB_ENV
-          echo "exe_name=$exe" >> $env:GITHUB_OUTPUT
+          echo "::set-output name=exe_name::$exe"
 
       - name: Create GitHub Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -67,7 +64,7 @@ jobs:
           prerelease: false
 
       - name: Upload .exe to GitHub Release
-        uses: actions/upload-release-asset@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
