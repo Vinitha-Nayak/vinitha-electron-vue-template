@@ -52,7 +52,7 @@ jobs:
           echo "exe_name=$exe" >> $env:GITHUB_ENV
 
       - name: Create GitHub Release
-        uses: actions/create-release@v4
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ github.run_number }}
           name: Release v${{ github.run_number }}  # ← correct input name
