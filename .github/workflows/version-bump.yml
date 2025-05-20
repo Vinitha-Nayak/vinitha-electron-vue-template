@@ -50,25 +50,20 @@ jobs:
         run: |
           $exe = Get-ChildItem *.exe | Select-Object -ExpandProperty Name
           echo "exe_name=$exe" >> $env:GITHUB_ENV
-          echo "::set-output name=exe_name::$exe"
 
       - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/create-release@v4
         with:
           tag_name: v${{ github.run_number }}
-          release_name: Release v${{ github.run_number }}
+          name: Release v${{ github.run_number }}  # ← correct input name
           draft: false
           prerelease: false
-
-      - name: Upload .exe to GitHub Release
-        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload .exe to GitHub Release
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ steps.get_exe.outputs.exe_name }}
-          asset_name: ${{ steps.get_exe.outputs.exe_name }}
-          asset_content_type: application/octet-stream
+          files: ${{ steps.get_exe.outputs.exe_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
