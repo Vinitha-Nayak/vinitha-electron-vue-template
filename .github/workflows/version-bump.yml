@@ -1,6 +1,9 @@
 name: Build and Release EXE
 
-on: push
+on:
+  push:
+    branches:
+      - dev
 
 jobs:
   build-project:
