@@ -57,5 +57,5 @@ jobs:
           draft: false
           prerelease: false
           files: ${{ steps.get_exe.outputs.exe_name }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # env:
+        #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
