@@ -1,6 +1,9 @@
 name: Build and Release EXE
 
-on: push
+on:
+  push:
+    branches:
+      - dev
 
 jobs:
   build-project:
@@ -50,7 +53,7 @@ jobs:
         run: |
           $exe = Get-ChildItem *.exe | Select-Object -ExpandProperty Name
           echo "exe_name=$exe" >> $env:GITHUB_ENV
-          echo "::set-output name=exe_name::$exe"
+          echo "exe_name=$exe" >> $env:GITHUB_OUTPUT
 
       - name: Create GitHub Release
         id: create_release
